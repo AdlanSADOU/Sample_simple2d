@@ -9,7 +9,7 @@
                 "/EHsc",
                 "/Fe:",
                 "${workspaceFolder}/build/sample.exe",
-                "*.c",
+                "src/*.c",
 
                 "/I", "deps/simple2d/include",
                 "/I", "deps/simple2d/deps/headers",

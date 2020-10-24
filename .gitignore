@@ -1,0 +1,7 @@
+*.obj
+*.pdb
+*.ilk
+
+build/*.obj
+build/*.pdb
+build/*.ilk
