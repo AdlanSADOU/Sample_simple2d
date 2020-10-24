@@ -19,8 +19,10 @@ Open a developer command prompt ie: `x64 Native Tools Command Prompt for VS 2019
 `cd` into the cloned repo then `code .` to open this repo as a workspace in Visual Studio Code.
 
 `cd` into `deps/simple2d` and run `nmake /f NMakefile all install`
-It should build the `simple2d` lib and dll and will be located at /deps/simple2d/build
+It should build the `simple2d` lib and dll and will be located at `/deps/simple2d/build`
 
 ---
 
 If you are running this as a worspace in `Visual Studio Code` you can simply press `F5` to build and run.
+
+If you dont, you're on your own.
