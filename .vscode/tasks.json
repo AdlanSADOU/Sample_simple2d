@@ -1,0 +1,33 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "C/C++: cl.exe build active file",
+            "command": "cl.exe",
+            "args": [
+                "/Zi",
+                "/EHsc",
+                "/Fe:",
+                "${workspaceFolder}/build/sample.exe",
+                "*.c",
+
+                "/I", "deps/simple2d/include",
+                "/I", "deps/simple2d/deps/headers",
+
+                "/link", "/LIBPATH", "deps/simple2d/build/simple2d.lib",
+                "/SUBSYSTEM:CONSOLE",
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ],
+    "version": "2.0.0"
+}
