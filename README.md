@@ -23,6 +23,6 @@ It should build the `simple2d` lib and dll and will be located at `/deps/simple2
 
 ---
 
-If you are running this as a worspace in `Visual Studio Code` you can simply press `F5` to build and run.
+If you are running this as a workspace in `Visual Studio Code` you can simply press `F5` to build and run.
 
 If you dont, you're on your own.
