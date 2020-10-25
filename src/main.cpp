@@ -1,50 +1,58 @@
-#include "simple2d.h"
+#include "game.h"
 
 // SDL_main.h is included automatically from SDL.h
 #ifdef main
 #undef main
 #endif
 
-struct sfSprite
-{
-    S2D_Sprite *S2D_sprite = NULL;
-    S2D_FRect rect;
-    S2D_Vec2f position;
-};
-
 S2D_Window *window = NULL;
-S2D_Sprite *sprite = NULL;
+sdEntity *entity = NULL;
 float speed = 2.f;
 
-void contains_point_rect(S2D_FRect rect, S2D_Vec2f vec)
+bool sdContainsPointRect(S2D_IRect rect, int point_x, int point_y)
 {
-    
+    printf("rect(%d, %d)\nmous(%d, %d)\n", rect.x, rect.y, point_x, point_y);
+
+    bool topLeft = (point_x >= rect.x);
+    bool bottomLeft = (point_y >= rect.y);
+    bool topRight = (point_x <= (rect.x + rect.width));
+    bool bottomRight = (point_y <= (rect.y + rect.height));
+
+    if (topLeft && topRight &&
+        bottomLeft && bottomRight)
+    {
+        printf("collides!\n");
+        return true;
+    }
+    return false;
 }
 
 void move_sprite(SDL_Keycode key)
 {
+    int x = 0, y = 0;
+
     switch (key)
     {
-    case SDLK_w:
-        (sprite->y) -= 1 * speed;
+    case SDLK_w: --y;
         break;
-    case SDLK_a:
-        (sprite->x) -= 1 * speed;
+    case SDLK_a: --x;
         break;
-    case SDLK_s:
-        (sprite->y) += 1 * speed;
-    break;
-    case SDLK_d:
-        (sprite->x) += 1 * speed;
+    case SDLK_s: ++y;
+        break;
+    case SDLK_d: ++x;
         break;
     default:
         break;
     }
+    
+    sdEntityMove(entity, x * speed, y * speed);
 }
 
+bool contains = 0;
 void on_key(S2D_Event e) 
 {
     SDL_Keycode key = SDL_GetKeyFromName(e.key);
+    
 
     switch (e.type)
     {
@@ -52,7 +60,8 @@ void on_key(S2D_Event e)
         key == SDLK_ESCAPE ? S2D_Close(window) : 0;
     break;
     case S2D_KEY_HELD:
-        move_sprite(key);
+        if (contains)
+            move_sprite(key);
     break;
     
     default:
@@ -62,12 +71,13 @@ void on_key(S2D_Event e)
 
 void update()
 {
-    printf("mouse (%d, %d)\n", window->mouse.x, window->mouse.y);
+    system("cls");
+    contains = sdContainsPointRect(entity->rect, window->mouse.x, window->mouse.y);
 }
 
 void render()
 {
-    S2D_DrawSprite(sprite);
+    S2D_DrawSprite(entity->sprite);
 }
 
 int main(int argc, char const *argv[])
@@ -76,10 +86,9 @@ int main(int argc, char const *argv[])
     window->vsync = false;
     window->on_key = on_key;
 
-    sprite = S2D_CreateSprite("assets/profile.png");
-    if (sprite) {
-        sprite->width = 128;
-        sprite->height = 128;
+    entity = sdEntityCreate("assets/profile.png");
+    if (entity && entity->sprite) {
+        sdEntitySetSize(entity, 128, 128);
     } else printf("could not load sprite\n");
 
     S2D_Show(window);
