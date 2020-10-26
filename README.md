@@ -29,4 +29,4 @@ If you dont, you're on your own.
 
 ---
 
-Great things are in the works! If you're interested in an `SFML` like but simpler and lighter 2D library make sure to `Watch` this repo and my fork of [simple2d](https://github.com/AdlanSADOU/simple2d).
+Great things are in the works! If you're interested in an `SFML` like but simpler and lighter 2D library developed in `C` make sure to `Watch` this repo and my fork of [simple2d](https://github.com/AdlanSADOU/simple2d).
