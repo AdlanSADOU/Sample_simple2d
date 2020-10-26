@@ -1,6 +1,6 @@
 # Getting started
 
-This project makes use of [simple2d](https://github.com/simple2d/simple2d) repository as a submodule.
+This project makes use of my fork of [simple2d](https://github.com/AdlanSADOU/simple2d) repository as a submodule.
 Follow these steps to be able to build it:
 
 ## On Windows
@@ -26,3 +26,7 @@ It should build the `simple2d` lib and dll and will be located at `/deps/simple2
 If you are running this as a workspace in `Visual Studio Code` you can simply press `F5` to build and run.
 
 If you dont, you're on your own.
+
+---
+
+Great things are in the works! If you're interested in an `SFML` like but simpler and lighter 2D library make sure to `Watch` this repo and my fork of [simple2d](https://github.com/AdlanSADOU/simple2d).
