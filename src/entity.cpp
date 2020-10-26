@@ -44,3 +44,13 @@ void sdEntityMove(sdEntity *entity, int x, int y)
     entity->rect.x += x;
     entity->rect.y += y;
 }
+
+void sdEntitySetPosition(sdEntity *entity, int x, int y)
+{
+    entity->sprite->x = x;
+    entity->sprite->y = y;
+    entity->position.x = x;
+    entity->position.y = y;
+    entity->rect.x = x;
+    entity->rect.y = y;
+}
