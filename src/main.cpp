@@ -81,12 +81,14 @@ void sdEntityDraw(sdEntity *entity, bool debugMode)
 {
     S2D_IRect rect = entity->rect;
 
-    GLfloat x1 = rect.x,                  y1 = rect.y;
-    GLfloat x2 = (rect.x + rect.width),   y2 = (rect.y);
-    GLfloat x3 = (rect.x + rect.width),   y3 = (rect.y + rect.height);
-    GLfloat x4 = (rect.x),                y4 = (rect.y + rect.height);
+    GLfloat x1 = rect.x,                y1 = rect.y;
+    GLfloat x2 = rect.x + rect.width,   y2 = rect.y;
+    GLfloat x3 = rect.x + rect.width,   y3 = rect.y + rect.height;
+    GLfloat x4 = rect.x,                y4 = rect.y + rect.height;
 
     S2D_Color color = { 1.0, 0.5, 0.5, 1.0 };
+
+    S2D_DrawSprite(entity->sprite);
 
     S2D_DrawQuad(
         x1, y1,   color.r, color.g, color.b, color.a,
@@ -94,7 +96,6 @@ void sdEntityDraw(sdEntity *entity, bool debugMode)
         x3, y3,   color.r, color.g, color.b, color.a,
         x4, y4,   color.r, color.g, color.b, color.a
     );
-    // S2D_DrawSprite(entity->sprite);
 }
 
 void render()
@@ -113,13 +114,16 @@ int main(int argc, char const *argv[])
     window->vsync = false;
     window->on_key = sdOnKeyCallback;
     window->background = { .12, .10, .10};
+    window->fps_cap = 999;
 
     entity = sdEntityCreate("assets/profile.png");
-    
+
     if (entity && entity->sprite) {
         sdEntitySetSize(entity, 128, 128);
         sdEntityMove(entity, 50, 50);
     } else printf("could not load sprite\n");
+
+    system("dir");
 
     S2D_Show(window);
     return 0;
