@@ -14,6 +14,22 @@ typedef struct args {
     int i = 0;
 } update_args;
 
+int S2D_FRect_Intersect(S2D_FRect rect1, S2D_FRect rect2)
+{
+    float r1x = rect1.x + rect1.width;
+    float r1y = rect1.y - rect1.height;
+    float r2x = rect2.x + rect2.width;
+    float r2y = rect2.y - rect2.height;
+
+    if (rect1.x >= r2x || rect2.x >= r1x) 
+        return 0; 
+
+    if (rect1.y <= r2y || rect2.y <= r1y) 
+        return 0; 
+
+    return 1;
+}
+
 bool sdContainsPointRect(S2D_IRect rect, int point_x, int point_y)
 {
     // printf("rect(%d, %d)\nmous(%d, %d)\n", rect.x, rect.y, point_x, point_y);
