@@ -19,18 +19,34 @@ typedef struct args {
 
 bool S2D_FRect_Intersect(S2D_FRect rect1, S2D_FRect rect2)
 {
-    float r1x = rect1.x + rect1.width;
-    float r1y = rect1.y - rect1.height;
-    float r2x = rect2.x + rect2.width;
-    float r2y = rect2.y - rect2.height;
+    // float r1x = rect1.x + rect1.width;
+    // float r1y = rect1.y - rect1.height;
+    // float r2x = rect2.x + rect2.width;
+    // float r2y = rect2.y - rect2.height;
 
-    if (rect1.x >= r2x || rect2.x >= r1x) 
-        return false; 
+    printf("\nS2D_FRect_Intersect:\n"
+            "sprite pos: (%f, %f)\n"
+            "rect   pos: (%f, %f)\n"
+            "rect   wh : (%d, %d)\n"
+            "sprt   wh : (%d, %d)\n",
+            entity->sprite->x, entity->sprite->y,
+            rect1.x, rect1.y,
+            rect1.width, rect1.height,
+            entity->sprite->width, entity->sprite->height);
 
-    if (rect1.y <= r2y || rect2.y <= r1y) 
-        return false; 
+    // if (rect1.x >= r2x || rect2.x >= r1x) 
+    //     return false; 
 
-    return true;
+    // if (rect1.y <= r2y || rect2.y <= r1y) 
+    //     return false; 
+
+    if (rect1.x < rect2.x + rect2.width &&
+        rect1.x + rect1.width > rect2.x &&
+        rect1.y < rect2.y + rect2.height &&
+        rect1.y + rect1.height > rect2.y) {
+            return true;
+        }
+    return false;
 }
 
 bool sdContainsPointRect(S2D_FRect rect, int point_x, int point_y)
@@ -61,11 +77,17 @@ void sdEntityDraw(sdEntity *entity, bool debugMode)
 
     S2D_Color color = { 1.0, 0.5, 0.5, 1.0 };
 
-    // S2D_DrawSprite(entity->sprite);
     S2D_DrawSprite(entity->sprite);
 
-    // S2D_DrawQuad()
     S2D_DrawRect(rect, color, true);
+    printf("sprite pos: (%f, %f)\n"
+            "rect  pos: (%f, %f)\n"
+            "rect  wh : (%d, %d)\n"
+            "sprt  wh : (%d, %d)\n",
+            entity->sprite->x, entity->sprite->y,
+            rect.x, rect.y,
+            rect.width, rect.height,
+            entity->sprite->width, entity->sprite->height);
 }
 
 void move_sprite(SDL_Keycode key)
@@ -89,8 +111,9 @@ void move_sprite(SDL_Keycode key)
     default:
         break;
     }
-    uint32_t dt = window->loop_ms;
-    printf("ms: %d\n", dt);
+    float_t dt = (float_t)((float_t)window->loop_ms/100.0f);
+    speed = 10.f;
+    printf("float dt: %f\n", dt);
     sdEntityMove(entity, x * speed * dt, y * speed * dt);
 }
 
@@ -115,19 +138,17 @@ void update(void* args)
 {
     system("cls");
     update_args *a_args = (update_args *)(args);
-    // system("cls");
     contains = sdContainsPointRect(entity->rect, window->mouse.x, window->mouse.y);
     // contains ? printf("%d: %s (%f, %f)\n", ++(a_args->i), a_args->str, entity->rect.x, entity->rect.y) : 0;
 }
 
 void render()
 {
-    // sdEntityDraw(entity, true);
-    printf("x : %f\n y + height : %f\n", entity->rect.x, entity->rect.y - entity->rect.height);
-    if (S2D_FRect_Intersect(testrect, S2D_FRect {150,150, 100,100}))
+    sdEntityDraw(entity, true);
+    if (S2D_FRect_Intersect(entity->rect, S2D_FRect {150,150, 100,100}))
         printf("intersects!\n");
     S2D_DrawRect(S2D_FRect {150,150, 100,100}, S2D_Color {1.f, .2f,.2f, 1.f}, true);
-    S2D_DrawRect(testrect, S2D_Color {.2f, .9f,.2f, 1.f}, true);
+    // S2D_DrawRect(testrect, S2D_Color {.2f, .9f,.2f, 1.f}, true);
 }
 
 int main(int argc, char const *argv[])
@@ -137,17 +158,16 @@ int main(int argc, char const *argv[])
 
     window = S2D_CreateWindow("Awesome Sample", 800, 600, update, render, S2D_RESIZABLE);
     window->on_update_args = (&u_args);
-    window->vsync = false;
+    window->vsync = true;
     window->on_key = sdOnKeyCallback;
     window->background = { .12, .10, .10};
-    window->fps_cap = 30;
+    window->fps_cap = 60;
 
     entity = sdEntityCreate("assets/profile.png");
 
     if (entity && entity->sprite) {
-        sdEntitySetPosition(entity, 0,0);
         sdEntitySetSize(entity, 128, 128);
-        // sdEntityMove(entity, 50, 50);
+        sdEntitySetPosition(entity, 0,0);
     } else printf("could not load sprite\n");
 
 
