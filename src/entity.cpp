@@ -12,7 +12,7 @@ sdEntity *sdEntityCreate(const char *path)
         return NULL;
     }
     
-    S2D_SpriteF *sprite = S2D_CreateSpriteF(path);
+    S2D_Sprite *sprite = S2D_CreateSprite(path);
     if (!sprite) {
         printf("Sprite creation failed %d %s", __LINE__, __FILE__);
         free(entity);

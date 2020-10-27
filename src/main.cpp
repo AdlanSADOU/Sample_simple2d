@@ -62,7 +62,7 @@ void sdEntityDraw(sdEntity *entity, bool debugMode)
     S2D_Color color = { 1.0, 0.5, 0.5, 1.0 };
 
     // S2D_DrawSprite(entity->sprite);
-    S2D_DrawSpriteF(entity->sprite);
+    S2D_DrawSprite(entity->sprite);
 
     // S2D_DrawQuad()
     S2D_DrawRect(rect, color, true);
@@ -113,6 +113,7 @@ void sdOnKeyCallback(S2D_Event e)
 
 void update(void* args)
 {
+    system("cls");
     update_args *a_args = (update_args *)(args);
     // system("cls");
     contains = sdContainsPointRect(entity->rect, window->mouse.x, window->mouse.y);

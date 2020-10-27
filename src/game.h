@@ -4,7 +4,7 @@
 #include "simple2d.h"
 
 typedef struct {
-    S2D_SpriteF *sprite;
+    S2D_Sprite *sprite;
     S2D_FRect rect;
     S2D_Vec2f position;
 } sdEntity;
