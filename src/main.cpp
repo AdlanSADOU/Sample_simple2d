@@ -14,7 +14,7 @@ typedef struct args {
     int i = 0;
 } update_args;
 
-bool sdContainsPointRect(S2D_IRect rect, int point_x, int point_y)
+bool sdContainsPointRect(S2D_FRect rect, int point_x, int point_y)
 {
     // printf("rect(%d, %d)\nmous(%d, %d)\n", rect.x, rect.y, point_x, point_y);
     static int i = 0;
@@ -31,9 +31,27 @@ bool sdContainsPointRect(S2D_IRect rect, int point_x, int point_y)
     return false;
 }
 
+void sdEntityDraw(sdEntity *entity, bool debugMode)
+{
+    S2D_FRect rect = entity->rect;
+
+    GLfloat x1 = rect.x,                y1 = rect.y;
+    GLfloat x2 = rect.x + rect.width,   y2 = rect.y;
+    GLfloat x3 = rect.x + rect.width,   y3 = rect.y + rect.height;
+    GLfloat x4 = rect.x,                y4 = rect.y + rect.height;
+
+    S2D_Color color = { 1.0, 0.5, 0.5, 1.0 };
+
+    // S2D_DrawSprite(entity->sprite);
+    S2D_DrawSpriteF(entity->sprite);
+
+    // S2D_DrawQuad()
+    S2D_DrawRect(rect, color, true);
+}
+
 void move_sprite(SDL_Keycode key)
 {
-    int x = 0, y = 0;
+    float x = 0, y = 0;
 
     switch (key)
     {
@@ -48,8 +66,9 @@ void move_sprite(SDL_Keycode key)
     default:
         break;
     }
-    
-    sdEntityMove(entity, x * speed, y * speed);
+    uint32_t dt = window->loop_ms;
+    printf("ms: %d\n", dt);
+    sdEntityMove(entity, x * speed * dt, y * speed * dt);
 }
 
 bool contains = 0;
@@ -61,7 +80,7 @@ void sdOnKeyCallback(S2D_Event e)
         case S2D_KEY_UP: key == SDLK_ESCAPE ? S2D_Close(window) : 0;
             break;
 
-        case S2D_KEY_HELD: contains ? move_sprite(key) : 0;
+        case S2D_KEY_HELD: move_sprite(key);
             break;
 
         default:
@@ -72,37 +91,15 @@ void sdOnKeyCallback(S2D_Event e)
 void update(void* args)
 {
     update_args *a_args = (update_args *)(args);
-
+    // system("cls");
     contains = sdContainsPointRect(entity->rect, window->mouse.x, window->mouse.y);
-    contains ? printf("%d: %s\n", ++(a_args->i), a_args->str) : 0;
-}
-
-void sdEntityDraw(sdEntity *entity, bool debugMode)
-{
-    S2D_IRect rect = entity->rect;
-
-    GLfloat x1 = rect.x,                y1 = rect.y;
-    GLfloat x2 = rect.x + rect.width,   y2 = rect.y;
-    GLfloat x3 = rect.x + rect.width,   y3 = rect.y + rect.height;
-    GLfloat x4 = rect.x,                y4 = rect.y + rect.height;
-
-    S2D_Color color = { 1.0, 0.5, 0.5, 1.0 };
-
-    S2D_DrawSprite(entity->sprite);
-
-    S2D_DrawQuad(
-        x1, y1,   color.r, color.g, color.b, color.a,
-        x2, y2,   color.r, color.g, color.b, color.a,
-        x3, y3,   color.r, color.g, color.b, color.a,
-        x4, y4,   color.r, color.g, color.b, color.a
-    );
+    contains ? printf("%d: %s (%f, %f)\n", ++(a_args->i), a_args->str, entity->rect.x, entity->rect.y) : 0;
 }
 
 void render()
 {
     sdEntityDraw(entity, true);
 }
-
 
 int main(int argc, char const *argv[])
 {
@@ -114,16 +111,15 @@ int main(int argc, char const *argv[])
     window->vsync = false;
     window->on_key = sdOnKeyCallback;
     window->background = { .12, .10, .10};
-    window->fps_cap = 999;
+    window->fps_cap = 30;
 
     entity = sdEntityCreate("assets/profile.png");
 
     if (entity && entity->sprite) {
+        sdEntitySetPosition(entity, 0,0);
         sdEntitySetSize(entity, 128, 128);
-        sdEntityMove(entity, 50, 50);
+        // sdEntityMove(entity, 50, 50);
     } else printf("could not load sprite\n");
-
-    system("dir");
 
     S2D_Show(window);
     return 0;

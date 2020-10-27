@@ -12,7 +12,7 @@ sdEntity *sdEntityCreate(const char *path)
         return NULL;
     }
     
-    S2D_Sprite *sprite = S2D_CreateSprite(path);
+    S2D_SpriteF *sprite = S2D_CreateSpriteF(path);
     if (!sprite) {
         printf("Sprite creation failed %d %s", __LINE__, __FILE__);
         free(entity);
@@ -35,7 +35,7 @@ void sdEntitySetSize(sdEntity *entity, int width, int height)
     entity->rect.height = height;
 }
 
-void sdEntityMove(sdEntity *entity, int x, int y)
+void sdEntityMove(sdEntity *entity, float x, float y)
 {
     entity->sprite->x += x;
     entity->sprite->y += y;
@@ -45,7 +45,7 @@ void sdEntityMove(sdEntity *entity, int x, int y)
     entity->rect.y += y;
 }
 
-void sdEntitySetPosition(sdEntity *entity, int x, int y)
+void sdEntitySetPosition(sdEntity *entity, float x, float y)
 {
     entity->sprite->x = x;
     entity->sprite->y = y;
