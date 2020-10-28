@@ -27,7 +27,31 @@ sdEntity *sdEntityCreate(const char *path)
     return entity;
 }
 
-void sdEntitySetSize(sdEntity *entity, int width, int height)
+void sdEntityDraw(sdEntity *entity, bool debugMode)
+{
+    S2D_FRect rect = entity->rect;
+
+    GLfloat x1 = rect.x,                y1 = rect.y;
+    GLfloat x2 = rect.x + rect.width,   y2 = rect.y;
+    GLfloat x3 = rect.x + rect.width,   y3 = rect.y + rect.height;
+    GLfloat x4 = rect.x,                y4 = rect.y + rect.height;
+
+    S2D_Color color = { 1.0, 0.5, 0.5, 1.0 };
+
+    S2D_DrawSprite(entity->sprite);
+
+    S2D_DrawRect(rect, color, true);
+    printf("sprite pos: (%f, %f)\n"
+            "rect  pos: (%f, %f)\n"
+            "rect  wh : (%f, %f)\n"
+            "sprt  wh : (%f, %f)\n",
+            entity->sprite->x, entity->sprite->y,
+            rect.x, rect.y,
+            rect.width, rect.height,
+            entity->sprite->width, entity->sprite->height);
+}
+
+void sdEntitySetSize(sdEntity *entity, float width, float height)
 {
     entity->sprite->width = width;
     entity->sprite->height = height;

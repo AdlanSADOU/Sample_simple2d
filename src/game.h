@@ -11,7 +11,8 @@ typedef struct {
 
 // function decl: sdEntity 
 sdEntity *sdEntityCreate(const char *path);
-void sdEntitySetSize(sdEntity *entity, int width, int height);
+void sdEntityDraw(sdEntity *entity, bool debugMode);
+void sdEntitySetSize(sdEntity *entity, float width, float height);
 void sdEntityMove(sdEntity *entity, float x, float y);
 void sdEntitySetPosition(sdEntity *entity, float x, float y);
 
