@@ -41,14 +41,6 @@ void sdEntityDraw(sdEntity *entity, bool debugMode)
     S2D_DrawSprite(entity->sprite);
 
     S2D_DrawRect(rect, color, true);
-    printf("sprite pos: (%f, %f)\n"
-            "rect  pos: (%f, %f)\n"
-            "rect  wh : (%f, %f)\n"
-            "sprt  wh : (%f, %f)\n",
-            entity->sprite->x, entity->sprite->y,
-            rect.x, rect.y,
-            rect.width, rect.height,
-            entity->sprite->width, entity->sprite->height);
 }
 
 void sdEntitySetSize(sdEntity *entity, float width, float height)
