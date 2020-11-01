@@ -1,6 +1,8 @@
 #include "game.h"
 #include "vector"
 
+std::vector<Projectile*> Projectiles;
+
 void projectileFree(Projectile *proj)
 {
     S2D_FreeSprite((proj)->frame0);
@@ -41,4 +43,49 @@ Projectile *projectileCreate(float playerX, float playerY)
     proj->speed = 20.f;
 
     return proj;
+}
+
+void projectilesShoot(float playerX, float playerY)
+{
+    Projectiles.push_back(projectileCreate(playerX, playerY));
+}
+
+void projectilesUpdate()
+{
+        if (Projectiles.size() > 0) {
+        for (size_t i = 0; i < Projectiles.size(); i++) {
+            Projectile *proj = Projectiles.at(i);
+            // 
+            proj->frame0->y -= proj->speed;
+
+            ++proj->framesLived;
+            int test = ((proj->frameBorn + proj->framesLived) - proj->frameBorn);
+            if (test > proj->framesToDie) {
+                proj->dead = true;
+            }
+        }
+    }
+
+    // Check collision with entities
+
+    // Projectiles: Destroy marked as dead
+    if (Projectiles.size() > 0) {
+        for (size_t i = 0; i < Projectiles.size(); i++) {
+            Projectile *proj = Projectiles.at(i);
+            if (proj->dead) {
+                projectileFree(proj);
+                Projectiles.erase(Projectiles.begin() + i);
+            }
+        }
+    }
+}
+
+void projectilesRender()
+{
+    if (Projectiles.size() > 0) {
+        for (size_t i = 0; i < Projectiles.size(); i++) {
+            if (!Projectiles[i]->dead)
+                S2D_DrawSprite(Projectiles[i]->frame0);
+        }
+    }
 }

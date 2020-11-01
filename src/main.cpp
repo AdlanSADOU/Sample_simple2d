@@ -10,7 +10,7 @@ S2D_Text *fps;
 float gSpeed = .9f;
 float gDeltaTime = 0.f;
 
-void move_sprite(SDL_Keycode key)
+void axisInput(SDL_Keycode key)
 {
 
     switch (key) {
@@ -39,8 +39,8 @@ void sdOnKeyCallback(S2D_Event e)
             break;
 
         case S2D_KEY_HELD: 
-            move_sprite(key);
-            invader_shoot(key);
+            axisInput(key);
+            invaderOnKeyHeld(key);
             break;
         default:
         break;
@@ -54,12 +54,12 @@ void update(void* args)
     S2D_SetText(fps, "FPS: %.2f ms: %.2f", gWindow->fps, gDeltaTime);
     gDeltaTime = (float)(gWindow->loop_ms/100.0f);
 
-    invader_update(a_args);
+    invaderUpdate(a_args);
 }
 
 void render()
 {
-    invader_render();
+    invaderRender();
     S2D_DrawText(fps);
 }
 
@@ -74,7 +74,7 @@ int main(int argc, char const *argv[])
     gWindow->fps_cap         = 60;
     
     fps = S2D_CreateText("assets/PixelSpaceRage/fonts/space_invaders.ttf", "Hello Space!", 20);
-    invader_init();
+    invaderInit();
 
     S2D_Show(gWindow);
     return 0;

@@ -2,7 +2,7 @@
 #define GAME_H
 
 #include "simple2d.h"
-
+#include "vector"
 /*
  * extern meaning that this variable will be defined somewhere
  * in this case gWindow is defined in main.cpp
@@ -47,6 +47,9 @@ struct Projectile
 
 void projectileFree(Projectile *proj);
 Projectile *projectileCreate(float playerX, float playerY);
+void projectilesShoot(float playerX, float playerY);
+void projectilesUpdate();
+void projectilesRender();
 
 // function decl: sdEntity 
 sdEntity *sdEntityCreate(const char *path);
@@ -56,8 +59,8 @@ void sdEntityMove(sdEntity *entity, float x, float y);
 void sdEntitySetPosition(sdEntity *entity, float x, float y);
 
 // invader 
-void invader_init();
-void invader_shoot(SDL_Keycode key);
-void invader_update(UpdateArgs *args);
-void invader_render();
+void invaderInit();
+void invaderOnKeyHeld(SDL_Keycode key);
+void invaderUpdate(UpdateArgs *args);
+void invaderRender();
 #endif // GAME_H
