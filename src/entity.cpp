@@ -38,9 +38,8 @@ void sdEntityDraw(sdEntity *entity, bool debugMode)
 
     S2D_Color color = { 1.0, 0.5, 0.5, 1.0 };
 
+    debugMode ? S2D_DrawRect(rect, color, true) : 0;
     S2D_DrawSprite(entity->sprite);
-
-    S2D_DrawRect(rect, color, true);
 }
 
 void sdEntitySetSize(sdEntity *entity, float width, float height)
