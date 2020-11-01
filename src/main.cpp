@@ -66,10 +66,10 @@ void render()
 int main(int argc, char const *argv[])
 {
     UpdateArgs u_args;
-    gWindow = S2D_CreateWindow("Awesome Sample", 800, 600, update, render, S2D_RESIZABLE);
+    gWindow = S2D_CreateWindow("Awesome Sample", 1280, 720, update, render, S2D_RESIZABLE);
     gWindow->background      = { .12f, .10f, .10f};
     gWindow->on_UpdateArgs  = (&u_args);
-    gWindow->viewport.mode   = S2D_SCALE;
+    gWindow->viewport.mode   = 3;
     gWindow->on_key          = sdOnKeyCallback;
     gWindow->fps_cap         = 60;
     
