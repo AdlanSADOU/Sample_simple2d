@@ -21,6 +21,8 @@ sdEntity *sdEntityCreate(const char *path)
 
     entity->rect.x = sprite->x;
     entity->rect.y = sprite->y;
+    entity->position.x = sprite->x;
+    entity->position.y = sprite->y;
     entity->rect.width = sprite->width;
     entity->rect.height = sprite->height;
     entity->sprite = sprite;
@@ -38,7 +40,7 @@ void sdEntityDraw(sdEntity *entity, bool debugMode)
 
     S2D_Color color = { 1.0, 0.5, 0.5, 1.0 };
 
-    // debugMode ? (S2D_DrawRect(rect, color, true) : 0);
+    if (debugMode) S2D_DrawRect(rect, color, true);
     S2D_DrawSprite(entity->sprite);
 }
 
